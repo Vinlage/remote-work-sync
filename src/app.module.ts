@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { CheckInModule } from './check-in/check-in.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CheckInModule } from './check-in/check-in.module';
       playground: true,
     }),
     CheckInModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
