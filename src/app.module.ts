@@ -6,6 +6,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { CheckInModule } from './check-in/check-in.module';
 import { RedisModule } from './redis/redis.module';
+import { FeatureFlagModule } from './feature-flags/feature-flag.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RedisModule } from './redis/redis.module';
     }),
     CheckInModule,
     RedisModule,
+    FeatureFlagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
