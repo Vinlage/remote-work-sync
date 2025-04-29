@@ -1,17 +1,17 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CheckIn } from './check-in.entity';
 import { CheckInService } from './check-in.service';
+import { CreateCheckInInput } from './dto/create-check-in.input';
 
-@Resolver(() => CheckIn)
+@Resolver(() => CreateCheckInInput)
 export class CheckInResolver {
   constructor(private readonly checkInService: CheckInService) {}
 
-  @Query(() => [CheckIn])
+  @Query(() => [CreateCheckInInput])
   getAllCheckIns() {
     return this.checkInService.getAllCheckIns();
   }
 
-  @Mutation(() => CheckIn)
+  @Mutation(() => CreateCheckInInput)
   createCheckIn(
     @Args('userId') userId: string,
     @Args('message') message: string,

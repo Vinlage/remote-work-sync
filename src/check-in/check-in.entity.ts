@@ -1,16 +1,16 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@ObjectType()
+@Entity()
 export class CheckIn {
-  @Field(() => Int)
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Field()
+  @Column()
   userId: string;
 
-  @Field()
+  @Column()
   message: string;
 
-  @Field()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 }
