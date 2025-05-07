@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CheckInService {
-  private checkIns: CheckIn[] = [];
   private idCounter = 1;
 
   constructor(
