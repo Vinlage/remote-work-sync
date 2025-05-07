@@ -1,36 +1,42 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { CheckInResolver } from './check-in.resolver';
 import { CheckInService } from './check-in.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { CheckIn } from './check-in.entity';
-import { FeatureFlagService } from 'src/feature-flags/feature-flag.service';
-import { RedisService } from 'src/redis/redis.service';
 
 describe('CheckInResolver', () => {
   let resolver: CheckInResolver;
+  let service: CheckInService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CheckInResolver,
-        CheckInService,
-        FeatureFlagService,
-        RedisService,
         {
-          provide: getRepositoryToken(CheckIn),
+          provide: CheckInService,
           useValue: {
-            find: jest.fn(),
-            findOne: jest.fn(),
-            save: jest.fn(),
+            getAllCheckIns: jest.fn().mockResolvedValue(['checkin1']),
+            createCheckIn: jest.fn().mockResolvedValue({
+              userId: 'user1',
+              message: 'Hello',
+            }),
           },
         },
       ],
     }).compile();
 
-    resolver = module.get<CheckInResolver>(CheckInResolver);
+    resolver = module.get(CheckInResolver);
+    service = module.get(CheckInService);
   });
 
-  it('should be defined', () => {
-    expect(resolver).toBeDefined();
+  it('should return all check-ins', async () => {
+    const result = await resolver.getAllCheckIns();
+    expect(result).toEqual(['checkin1']);
+    expect(service.getAllCheckIns).toHaveBeenCalled();
+  });
+
+  it('should create a check-in', async () => {
+    const result = await resolver.createCheckIn('user1', 'Hello');
+    expect(result).toEqual({ userId: 'user1', message: 'Hello' });
+    expect(service.createCheckIn).toHaveBeenCalledWith('user1', 'Hello');
   });
 });
